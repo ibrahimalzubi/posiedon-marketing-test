@@ -14,9 +14,10 @@ export function RegisterForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || ''
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`, {
+      const res = await fetch(`${baseUrl}/api/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(Object.fromEntries(formData)),
