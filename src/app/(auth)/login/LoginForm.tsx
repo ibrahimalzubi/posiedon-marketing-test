@@ -14,17 +14,22 @@ export function LoginForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || ''
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.fromEntries(formData)),
-    })
+    try {
+      const res = await fetch(`${baseUrl}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(formData)),
+      })
 
-    if (res.ok) {
-      router.push('/')
-    } else {
-      setError('Wrong password')
+      if (res.ok) {
+        router.push('/')
+      } else {
+        setError('Wrong password')
+      }
+    } catch {
+      setError('Something went wrong')
     }
   }
 
