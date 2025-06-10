@@ -26,8 +26,7 @@ export function LoginForm() {
       if (res.ok) {
         router.push('/')
       } else {
-        const data = (await res.json()) as { message?: string }
-        setError(data.message || 'Wrong password')
+        setError('Wrong password')
       }
     } catch (err) {
       setError('Something went wrong')
