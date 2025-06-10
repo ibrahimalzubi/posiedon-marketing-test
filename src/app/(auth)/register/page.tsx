@@ -1,5 +1,9 @@
+'use client'
+
 import { type Metadata } from 'next'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import type { FormEvent } from 'react'
 
 import { Button } from '@/components/Button'
 import { SelectField, TextField } from '@/components/Fields'
@@ -11,6 +15,21 @@ export const metadata: Metadata = {
 }
 
 export default function Register() {
+  const router = useRouter()
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(Object.fromEntries(formData)),
+    })
+
+    router.push('/login')
+  }
+
   return (
     <SlimLayout>
       <div className="flex">
@@ -32,7 +51,7 @@ export default function Register() {
         to your account.
       </p>
       <form
-        action="#"
+        onSubmit={handleSubmit}
         className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2"
       >
         <TextField
