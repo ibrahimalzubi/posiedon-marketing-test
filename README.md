@@ -18,6 +18,25 @@ npm run dev
 
 Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
 
+## API server
+
+This project also includes a small Express API in the `api/` directory. To run it:
+
+1. Install the API dependencies:
+
+```bash
+cd api
+npm install
+```
+
+2. Copy `api/.env.example` to `api/.env` and update the values.
+
+3. Start the API server:
+
+```bash
+npm start
+```
+
 ## Customizing
 
 You can start editing this template by modifying the files in the `/src` folder. The site will auto-update as you edit these files.
@@ -33,3 +52,4 @@ To learn more about the technologies used in this site template, see the followi
 - [Tailwind CSS](https://tailwindcss.com/docs) - the official Tailwind CSS documentation
 - [Next.js](https://nextjs.org/docs) - the official Next.js documentation
 - [Headless UI](https://headlessui.dev) - the official Headless UI documentation
+
