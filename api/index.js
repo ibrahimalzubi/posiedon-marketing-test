@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import { Pool } from 'pg'
+import bcrypt from 'bcryptjs'
 
 dotenv.config()
 
@@ -16,9 +17,10 @@ const pool = new Pool({
 app.post('/api/register', async (req, res) => {
   const { first_name, last_name, email, password } = req.body
   try {
+    const hashedPassword = await bcrypt.hash(password, 10)
     await pool.query(
       'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4)',
-      [first_name, last_name, email, password],
+      [first_name, last_name, email, hashedPassword],
     )
     res.json({ success: true })
   } catch (err) {
