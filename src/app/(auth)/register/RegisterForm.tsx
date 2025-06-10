@@ -13,7 +13,8 @@ export function RegisterForm() {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
 
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || ''
+    await fetch(`${baseUrl}/api/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(Object.fromEntries(formData)),
