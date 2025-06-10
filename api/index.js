@@ -29,6 +29,31 @@ app.post('/api/register', async (req, res) => {
   }
 })
 
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body
+  try {
+    const result = await pool.query(
+      'SELECT password FROM users WHERE email = $1',
+      [email],
+    )
+    if (result.rowCount === 0) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Invalid credentials' })
+    }
+    const valid = await bcrypt.compare(password, result.rows[0].password)
+    if (!valid) {
+      return res
+        .status(401)
+        .json({ success: false, message: 'Invalid credentials' })
+    }
+    res.json({ success: true })
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({ success: false })
+  }
+})
+
 const PORT = process.env.PORT || 4000
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
