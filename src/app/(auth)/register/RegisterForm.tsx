@@ -2,24 +2,34 @@
 
 import { useRouter } from 'next/navigation'
 import type { FormEvent } from 'react'
+import { useState } from 'react'
 
 import { Button } from '@/components/Button'
 import { SelectField, TextField } from '@/components/Fields'
 
 export function RegisterForm() {
   const router = useRouter()
+  const [error, setError] = useState<string | null>(null)
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
 
-    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(Object.fromEntries(formData)),
-    })
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(formData)),
+      })
 
-    router.push('/login')
+      if (res.ok) {
+        router.push('/login')
+      } else {
+        setError('Registration failed')
+      }
+    } catch (e) {
+      setError('Registration failed')
+    }
   }
 
   return (
@@ -67,6 +77,9 @@ export function RegisterForm() {
         <option>Our route 34 city bus ad</option>
         <option>The “Never Use This” podcast</option>
       </SelectField>
+      {error && (
+        <p className="col-span-full text-sm text-red-600">{error}</p>
+      )}
       <div className="col-span-full">
         <Button type="submit" variant="solid" color="blue" className="w-full">
           <span>
