@@ -10,6 +10,13 @@ To get started with this template, first install the npm dependencies:
 npm install
 ```
 
+Next, copy `.env.example` to `.env` and set your `DATABASE_URL` variable. You
+can create the `users` table with:
+
+```bash
+psql $DATABASE_URL -f api/create_users_table.sql
+```
+
 Next, run the development server:
 
 ```bash
@@ -17,10 +24,16 @@ npm run dev
 ```
 
 Finally, open [http://localhost:3000](http://localhost:3000) in your browser to view the website.
+## Authentication
 
-## API server
+When you sign up, your credentials are stored in the PostgreSQL database and you are redirected to the sign in page. After signing in you'll land on the home page.
 
-This project also includes a small Express API in the `api/` directory. To run it:
+
+## API server (optional)
+
+This project includes a small Express API in the `api/` directory. By default the Next.js
+API routes handle registration and login. If you prefer running the separate Express
+server, set `NEXT_PUBLIC_API_URL` to its URL and start it with the steps below:
 
 1. Install the API dependencies:
 
