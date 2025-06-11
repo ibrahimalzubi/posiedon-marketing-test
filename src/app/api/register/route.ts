@@ -1,6 +1,7 @@
 // src/app/api/register/route.ts
 import { NextResponse } from 'next/server'
 import { Pool } from 'pg'
+import bcrypt from 'bcryptjs'
 
 // Create one pool (Next will reuse this module on hot reload)
 const pool = new Pool({
@@ -21,13 +22,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    // 3) insert
+    // 3) hash password and insert
+    const hashedPassword = await bcrypt.hash(password, 10)
     const { rows } = await pool.query(
       `INSERT INTO users
          (first_name, last_name, email, password, referral_source)
        VALUES ($1,$2,$3,$4,$5)
        RETURNING id, first_name, last_name, email, created_at`,
-      [first_name, last_name, email, password, referral_source]
+      [first_name, last_name, email, hashedPassword, referral_source]
     )
 
     // 4) return the new user (omit password)
