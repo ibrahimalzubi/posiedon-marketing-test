@@ -17,6 +17,13 @@ can create the `users` table with:
 psql $DATABASE_URL -f api/create_users_table.sql
 ```
 
+Make sure the user in your `DATABASE_URL` has permission to insert into the
+`users` table. For example:
+
+```bash
+psql $DATABASE_URL -c "GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO myuser"
+```
+
 Next, run the development server:
 
 ```bash

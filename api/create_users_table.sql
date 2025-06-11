@@ -5,5 +5,6 @@ CREATE TABLE users (
   last_name TEXT NOT NULL,
   email TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
+  referral_source TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
